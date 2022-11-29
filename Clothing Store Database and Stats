@@ -1,0 +1,32 @@
+--Create a clothing store database
+
+CREATE TABLE clothes (id INTEGER PRIMARY KEY, name TEXT, color TEXT, size INTEGER, quantity INTEGER, price INTEGER);
+
+INSERT INTO clothes VALUES (1, "blouse", "white", 6, 15, 2);
+INSERT INTO clothes VALUES (2, "blouse", "blue", 8, 10, 2);
+INSERT INTO clothes VALUES (3, "blouse", "pink", 10, 8, 2);
+INSERT INTO clothes VALUES (4, "blouse", "red", 8, 5, 2);
+INSERT INTO clothes VALUES (5, "jeans", "blue", 6, 20, 3);
+INSERT INTO clothes VALUES (6, "jeans", "blue", 8, 15, 3);
+INSERT INTO clothes VALUES (7, "jeans", "white", 4, 10, 3);
+INSERT INTO clothes VALUES (8, "pants", "black", 6, 15, 4);
+INSERT INTO clothes VALUES (9, "pants", "brown", 8, 10, 4);
+INSERT INTO clothes VALUES (10, "pants", "blue", 10, 10, 4);
+INSERT INTO clothes VALUES (11, "shirt", "white", 10, 5, 5);
+INSERT INTO clothes VALUES (12, "shirt", "blue", 8, 15, 5);
+INSERT INTO clothes VALUES (13, "sweater", "gray", 8, 20, 6);
+INSERT INTO clothes VALUES (14, "sweater", "blue", 10, 10, 6);
+INSERT INTO clothes VALUES (15, "sweater", "green", 8, 5, 6);
+
+--display the data ordered by price
+SELECT * FROM clothes 
+ORDER BY price;
+
+--what is the quantity of all items in the store
+SELECT sum(quantity) FRoM clothes;
+
+--which 5 items in the store are cheapest
+SELECT name, color, price
+FROM clothes
+ORDER by quantity
+limit 5;
