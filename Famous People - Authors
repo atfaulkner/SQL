@@ -1,0 +1,54 @@
+/* Create table author */
+CREATE TABLE author (id INTEGER PRIMARY KEY, first_name TEXT, last_name TEXT, email TEXT);
+
+/* Insert data into table author */
+INSERT INTO author (first_name, last_name, email) VALUES ('Joe', 'Dispenza', 'joe@dispenza.com');
+INSERT INTO author (first_name, last_name, email) VALUES ('Napoleon', 'Hill', 'napoleon@hill.com');
+INSERT INTO author (first_name, last_name, email) VALUES ('C.S.', 'Lewis', 'cs@lewis.com');
+INSERT INTO author (first_name, last_name, email) VALUES ('Bob', 'Proctor', 'bob@proctor.com');
+INSERT INTO author (first_name, last_name, email) VALUES ('Chris', 'Voss', 'chris@voss.com');
+INSERT INTO author (first_name, last_name, email) VALUES ('David', 'Bach', 'david@bach.com');
+
+/* Create table book */
+CREATE TABLE book (id INTEGER PRIMARY KEY, title TEXT, year_published INTEGER, genre TEXT, price REAL, author_id INTEGER, publisher_id INTEGER);
+
+/* Insert data into table author */
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Becoming Supernatural', 2019, 'Self-Help', 14.59, 1, 1);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Evolve Your Brain', 2007, 'Self-Help', 14.99, 1, 2);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Think And Grow Rich', 2005, 'Self-Help', 7.49, 2, 6);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Mere Christianity', 1952, 'Christian Literature', 9.99, 3, 3);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('You Were Born Rich', 1984, 'Self-Help', 20.99, 4, 5);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Never Split The Difference', 2016, 'Self-Help', 17.99, 5, 4);
+INSERT INTO book (title, year_published, genre, price, author_id, publisher_id) VALUES ('Automatic Millionaire', 2003, 'Self-Help', 10.99, 6, 7);
+
+/* Create table publisher */
+CREATE TABLE publisher (id INTEGER PRIMARY KEY, name TEXT, book_id INTEGER);
+
+/* Insert data into table publisher */
+INSERT INTO publisher (name, book_id) VALUES ('Hay House', 1);
+INSERT INTO publisher (name, book_id) VALUES ('Health Communication', 2);
+INSERT INTO publisher (name, book_id) VALUES ('Tarcher Perigee', 3);
+INSERT INTO publisher (name, book_id) VALUES ('Harper One', 4);
+INSERT INTO publisher (name, book_id) VALUES ('Blackstone Publishing', 5);
+INSERT INTO publisher (name, book_id) VALUES ('Harper Business', 6);
+INSERT INTO publisher (name, book_id) VALUES ('Crown', 7);
+
+/* Find title, author, and price of all non-christian books and sort them by price */
+SELECT title, genre, first_name, last_name, price 
+FROM book 
+JOIN author ON book.author_id = author.id
+WHERE genre NOT LIKE 'Christian%'
+ORDER BY price;
+
+/* Find author, title, year published and publisher name and sort the data, newer books first */
+SELECT first_name, last_name, title, year_published, name 
+FROM author
+JOIN book ON author.id = book.author_id 
+JOIN publisher ON book.id = publisher.book_id
+ORDER BY year_published DESC;
+
+/* Group books by genre and find their average price */
+SELECT genre, ROUND(avg(price),2) as average_price
+FROM book
+GROUP BY genre
+ORDER BY average_price;
