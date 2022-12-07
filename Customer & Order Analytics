@@ -49,3 +49,15 @@ FROM FebSales
 WHERE location LIKE '%Los Angeles%'
 GROUP BY product;
 
+/* 9. Which locations in New York received at least 3 orders in January, and how many orders did they each receive? (Hint: use HAVING). */
+SELECT distinct location, count(orderid) AS orders
+FROM JanSales
+WHERE location LIKE '%NY%'
+GROUP BY location
+HAVING orders > 2;
+
+/* 10. How many of each type of headphone were sold in February? */
+SELECT product, SUM(quantity) as quantity
+FROM FebSales
+WHERE product LIKE '%Headphone%'
+GROUP BY product;
