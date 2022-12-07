@@ -61,3 +61,11 @@ SELECT product, SUM(quantity) as quantity
 FROM FebSales
 WHERE product LIKE '%Headphone%'
 GROUP BY product;
+
+/* 11. What was the average amount spent per account in February? (Hints: For this question, we want the average amount spent / number of accounts, 
+not the amount spent by each account. */
+SELECT avg(quantity*price)
+FROM customers
+INNER JOIN FebSales
+ON order_id = orderID
+GROUP BY acctnum;
