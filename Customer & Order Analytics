@@ -68,13 +68,13 @@ FROM customers
 INNER JOIN FebSales
 ON order_id = orderID;
 
-/* What was the average quantity of products purchased per account in February? We want the overall average, not the average for each account individually.*/
+/* 12. What was the average quantity of products purchased per account in February? We want the overall average, not the average for each account individually.*/
 SELECT sum(quantity)/count(acctnum) as average_quantity
 FROM customers
 INNER JOIN FebSales
 ON order_id = orderID;
 
-/* Which product brought in the most revenue in January and how much revenue did it bring in total? */
+/* 13. Which product brought in the most revenue in January and how much revenue did it bring in total? */
 SELECT product, sum(quantity*price) AS revenue
 FROM JanSales
 Group by product
