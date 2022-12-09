@@ -1,0 +1,120 @@
+-- For this project I used the chinook database and analyzed the data using SQL.
+
+--Show Customers (their full names, customer ID, and country) who are not in the US.
+SELECT customerid,
+       FirstName || ' ' || LastName AS FullName,
+       country
+  FROM customers
+ WHERE country <> 'USA';
+
+-- Show only the Customers from Brazil.
+SELECT customerid,
+       FirstName || ' ' || LastName AS FullName,
+       country
+  FROM customers
+ WHERE country = 'Brazil';
+
+-- Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+SELECT FirstName || ' ' || LastName AS FullName,
+       invoiceid,
+       invoicedate,
+       billingcountry
+  FROM customers
+       INNER JOIN
+       invoices ON customers.customerid = invoices.customerid
+ WHERE country = 'Brazil';
+ 
+-- Show the Employees who are Sales Agents.
+SELECT FirstName || ' ' || LastName AS FullName,
+       title
+  FROM employees
+ WHERE title LIKE "%Sales%Agent%";
+ 
+-- Find a unique/distinct list of billing countries from the Invoice table.
+SELECT DISTINCT billingcountry
+  FROM invoices
+ ORDER BY billingcountry ASC;
+ 
+-- Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+SELECT FirstName || ' ' || LastName AS FullName,
+       title
+  FROM employees
+ WHERE title LIKE "%Sales%Agent%";
+          
+-- Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+SELECT cust.FirstName || ' ' || cust.LastName AS CustomerName,
+       cust.country AS CustomerCountry,
+       emp.FirstName || ' ' || emp.LastName AS EmployeeName,
+       inv.total AS InvoiceTotal
+  FROM invoices inv
+       INNER JOIN
+       customers cust ON inv.invoiceid = cust.CustomerId
+       INNER JOIN
+       employees emp ON cust.supportrepid = emp.employeeid
+ ORDER BY customername ASC,
+          inv.invoiceid ASC;
+
+-- How many Invoices were there every year?
+select strftime('%Y', invoicedate) as year, count(invoiceid) as numberofinvoices from invoices
+group by year;
+
+-- How many Invoices were there in 2009?
+SELECT COUNT(invoiceid)
+FROM invoices
+WHERE strftime('%Y', invoicedate)  = '2009';
+
+-- OR
+SELECT COUNT(invoiceid)
+FROM invoices
+WHERE invoicedate LIKE '%2009%';
+ 
+-- What are the total sales for 2009? 
+SELECT sum(total)
+FROM
+(SELECT total, invoicedate
+FROM invoices
+WHERE invoicedate LIKE '%2009%');
+
+--OR
+SELECT SUM(total) 
+FROM invoices 
+WHERE invoicedate Like '%2009%';
+
+--Write a query that includes the purchased track name with each invoice line ID.
+SELECT ii.invoiceid, ii.invoicelineid, t.name
+FROM invoice_items ii
+LEFT JOIN tracks t
+ON ii.trackid = t.trackid;
+
+--Write a query that includes the purchased track name AND artist name with each invoice line ID.
+SELECT ii.invoiceid, ii.invoicelineid, t.name AS trackname, ar.name AS artistname
+FROM invoice_items ii
+LEFT JOIN tracks t ON ii.trackid = t.trackid
+LEFT JOIN albums al ON t.albumid = al.albumid
+LEFT JOIN artists ar ON ar.artistid = al.albumid;
+
+--Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+SELECT a.title AS albumname, t.name AS trackname, m.name AS medianame, g.name AS genresname
+FROM tracks t
+LEFT JOIN albums a ON t.albumid = a.albumid
+LEFT JOIN media_types m ON m.mediatypeid = t.mediatypeid
+LEFT JOIN genres g ON g.genreid = t.GenreId;
+
+--Show the total sales made by each sales agent.
+SELECT e.firstname, e.lastname, ROUND(Sum(i.total), 2) AS totalsales
+FROM employees e
+LEFT JOIN customers c ON e.employeeid = c.supportrepid
+LEFT JOIN invoices i ON c.customerid = i.customerid
+WHERE e.title LIKE '%Sales%Agent%'
+GROUP BY e.firstname, e.lastname;
+
+--Which sales agent made the most dollars in sales in 2009?
+SELECT firstname, lastname, MAX(totalsales) AS highestsale
+FROM
+(SELECT e.firstname, e.lastname, ROUND(Sum(i.total), 2) AS totalsales
+FROM employees e
+LEFT JOIN customers c ON e.employeeid = c.supportrepid
+LEFT JOIN invoices i ON c.customerid = i.customerid
+WHERE e.title LIKE '%Sales%Agent%'
+AND i.invoicedate LIKE '%2009%'
+GROUP BY e.firstname, e.lastname);
