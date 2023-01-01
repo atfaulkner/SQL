@@ -14,7 +14,7 @@ SELECT customerid,
   FROM customers
  WHERE country = 'Brazil';
 
--- Find the Invoices of customers who are from Brazil. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+-- Find the Invoices of customers who are from Brazil. The resulting table shows the customer's full name, Invoice ID, Date of the invoice, and billing country.
 SELECT FirstName || ' ' || LastName AS FullName,
        invoiceid,
        invoicedate,
@@ -35,7 +35,7 @@ SELECT DISTINCT billingcountry
   FROM invoices
  ORDER BY billingcountry ASC;
  
--- Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+-- Show the invoices associated with each sales agent. The resulting table includes the Sales Agent's full name.
 SELECT FirstName || ' ' || LastName AS FullName,
        title
   FROM employees
@@ -80,20 +80,20 @@ SELECT SUM(total)
 FROM invoices 
 WHERE invoicedate Like '%2009%';
 
---Write a query that includes the purchased track name with each invoice line ID.
+--Query that includes the purchased track name with each invoice line ID.
 SELECT ii.invoiceid, ii.invoicelineid, t.name
 FROM invoice_items ii
 LEFT JOIN tracks t
 ON ii.trackid = t.trackid;
 
---Write a query that includes the purchased track name AND artist name with each invoice line ID.
+--Query that includes the purchased track name AND artist name with each invoice line ID.
 SELECT ii.invoiceid, ii.invoicelineid, t.name AS trackname, ar.name AS artistname
 FROM invoice_items ii
 LEFT JOIN tracks t ON ii.trackid = t.trackid
 LEFT JOIN albums al ON t.albumid = al.albumid
 LEFT JOIN artists ar ON ar.artistid = al.albumid;
 
---Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+--Show all the Tracks, and include the Album name, Media type, and Genre.
 SELECT a.title AS albumname, t.name AS trackname, m.name AS medianame, g.name AS genresname
 FROM tracks t
 LEFT JOIN albums a ON t.albumid = a.albumid
