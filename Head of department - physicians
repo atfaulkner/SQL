@@ -1,0 +1,10 @@
+/* Tables: Physician and Department
+Physician table: Employee Id, Name, Position, SSN
+Department table: Department ID, Name, Head_Employee_Id */
+
+/* obtain the name of the physicians who are the head of each department, using the two tables
+
+SELECT department_id, department.name, physician.name
+FROM department 
+INNER JOIN physician 
+ON department.head_employee_id = physician.employee_id;
