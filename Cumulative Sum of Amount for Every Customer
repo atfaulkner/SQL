@@ -1,0 +1,13 @@
+/* Find the cumulative sum of amount for every customer, without using window function.
+Table Input: Cust ID, Date, Amount
+Table Output: Cust ID, Date, Amount, Cumulative
+
+SELECT c1.Cust_id, c1.date, c1.amount, SUM(c2.amount) Cumulative
+FROM Input c1
+INNER JOIN Input c2
+ON c1.cust_id = c2.cust_id
+AND c1.date >= c2.date
+GROUP BY c1.cust_id, 
+	c1.amount,
+	c1.date
+ORDER BY c1.cust_id, c1.date;
