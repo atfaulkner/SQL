@@ -1,0 +1,25 @@
+/* Table: Order Number, Purchase Amount, Order Date, Customer ID, Salesman ID
+
+/* Find out the number of orders booked and their total purchased amount for each day. 
+The output should be in the below format: ⦁	"For 2001-10-10 there are 15 orders and total amount is Rs.100" 
+*/
+
+SELECT concat('For ', Convert(date, ord_date), ' there are ', count (ord_no),' orders and total amount is Rs.', sum(purch_amt))
+FROM orders
+GROUP BY ord_date;
+
+
+/* Find the total purchase amount at a customer salesman level and rank the salesmen based on the total sales done
+
+SELECT SUM(purch_amt) As ttlAmt, salesman_id,
+Rank() OVER(ORDER BY SUM(purch_amt) DESC) AS Ranking
+FROM orders
+GROUP BY salesman_id;
+
+
+/* ⦁	Find the orders with all the field in such a manner that, the oldest order date will come first and the highest 
+purchase amount of same day will come first. */
+
+SELECT *,
+Rank() OVER(partition by ord_date ORDER BY ord_date ASC, purch_amt DESC) AS Ranking
+FROM orders;
