@@ -1,0 +1,32 @@
+/* Using the window function answer the following questions:
+⦁	Top 5 cards for the amount spent
+⦁	Top cards on ‘16-09-2018’
+⦁	Top 5 cards for each day based on the amount spent
+*/
+
+/*Top 5 cards for the amount spent
+WITH top_5 AS (
+SELECT *, 
+	   row_number() OVER(ORDER BY [Transaction Amount] DESC) [RowNumber]
+	   FROM  cards.dbo.creditcards)
+SELECT *
+FROM top_5 WHERE RowNumber <=5;
+
+
+/* Top 5 cards on ‘16-09-2018’
+WITH top_5 AS (
+SELECT *, 
+	   row_number() OVER(ORDER BY [Transaction Amount] DESC) [RowNumber]
+	   FROM  cards.dbo.creditcards
+	   WHERE Date='2018-09-16')
+SELECT *
+FROM top_5 WHERE RowNumber <=5;
+
+
+/* Top 5 cards for each day based on the amount spent
+WITH top_5 AS (
+	SELECT *, 
+	   row_number() OVER(PARTITION BY date ORDER BY [Transaction Amount] DESC) [RowNumber]
+	FROM cards.dbo.creditcards)
+SELECT *
+FROM top_5 WHERE RowNumber <=5;
