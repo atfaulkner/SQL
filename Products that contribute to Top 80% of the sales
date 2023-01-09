@@ -1,0 +1,20 @@
+/* Find the products that contribute to the TOP 80% of the sales. 
+Tip: If by combining say 4 products we achieve 78% of the sales and by including 
+the next one we reach 82%, in that case we would want to include 
+the 5th product so that we cross the 80% cut off. 
+*/
+
+/* Table: Product, Sales
+
+SELECT product, sales
+FROM 
+(
+select product, sales,
+	SUM(sales) OVER() AS total,
+	SUM(sales) OVER(ORDER BY sales DESC) AS to_here,
+	SUM(sales) OVER(ORDER BY sales DESC rows BETWEEN unbounded preceding AND 1 preceding) AS to_prev
+FROM prodsales
+) a
+ WHERE to_here *1.0/total <=0.8
+OR (to_here * 1.0/total >= 0.8 and COALESCE (to_prev, 0)*1.0/total <0.8)
+ORDER BY sales DESC;
