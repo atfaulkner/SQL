@@ -1,0 +1,9 @@
+/* convert Table T1 into Table T2
+Table T1: Cust ID, Metric (Consists of Sales and Units), Value
+Table T2: Cust ID, Sales, Units
+*/
+
+SELECT * FROM T1
+PIVOT
+(AVG(Value) FOR Metric IN (Sales, Units))
+AS pivottable;
